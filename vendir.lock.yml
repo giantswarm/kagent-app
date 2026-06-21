@@ -1,0 +1,25 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - helmChart:
+      appVersion: ""
+      version: 0.9.9
+    path: .
+  path: helm/kagent/charts/kagent
+- contents:
+  - git:
+      commitTitle: 'fix(substrate): bump amd64 runsc default to gVisor nightly 2026-06-02
+        (#2035)...'
+      sha: e9e4e34d6bd2d5950e81fefbcfd0bab70ea1eaaa
+      tags:
+      - v0.9.9
+    path: kagent.dev
+  - git:
+      commitTitle: 'refactor(helm): remove rbac.clusterScoped, derive RBAC scope from
+        rbac.namespaces (#134)...'
+      sha: 1cec6470560fa8ccc43de3d95c7567993ae13e95
+      tags:
+      - v0.3.0
+    path: kmcp
+  path: helm/kagent/crds
+kind: LockConfig

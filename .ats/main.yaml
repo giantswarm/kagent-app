@@ -1,0 +1,12 @@
+# app-test-suite configuration.
+#
+# Smoke/functional/upgrade test execution is skipped in CI for now: a real run
+# deploys the chart on a kind cluster, which pulls the kagent controller/UI images
+# from gsoci.azurecr.io/giantswarm. The smoke test under tests/ats is ready;
+# remove the matching entries from skip-steps once a kind run is wired up. Same
+# approach as giantswarm/agent-sandbox and giantswarm/muster.
+smoke-tests-cluster-type: kind
+upgrade-tests-cluster-type: kind
+# @TODO: enable ATS tests by removing the matching entries from skip-steps once a
+# kind-based deploy of the vendored kagent chart is validated.
+skip-steps: [smoke,functional,upgrade]

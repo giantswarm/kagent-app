@@ -1,0 +1,41 @@
+# See https://docs.giantswarm.io/reference/platform-api/chart-metadata/
+# for details and background.
+
+apiVersion: v2
+
+# Version of the packaged app (upstream kagent release vendored as a subchart).
+appVersion: 0.9.9
+
+# Make sure your name DOES NOT end in "app" or "-app".
+name: kagent
+
+# Please describe what the app provides in a sentence or two.
+description: Giant Swarm packaging of the upstream kagent-dev/kagent controller (Kubernetes-native AI agent runtime). The upstream app chart is vendored as a subchart; the kagent.dev and kmcp CRDs ship in this chart's crds/ directory so the app owns its CRDs (delivered via Flux CreateReplace).
+
+# URL of the GitHub repository that is the source of this Chart.yaml file.
+home: https://github.com/giantswarm/kagent-app
+
+# If you have an icon/logo, you should add it to https://github.com/giantswarm/web-assets
+# and set the final URL here.
+icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
+
+sources:
+- https://github.com/giantswarm/kagent-app
+- https://github.com/kagent-dev/kagent
+version: 0.0.0-dev
+annotations:
+  # Adapt to 'giantswarm' if this application is not to be deployed by customers
+  io.giantswarm.application.audience: all
+  # Adapt to 'true' if Giant Swarm takes responsibility for this app where it's deplyed
+  io.giantswarm.application.managed: "true"
+  # used through .Chart.Annotations . Please replace TEAM-NAME with your team's short name, e. g. 'shield'  for team-shield
+  io.giantswarm.application.team: bumblebee
+dependencies:
+  # Upstream kagent-dev/kagent controller chart, vendored under charts/ by vendir
+  # (the pinned version is tracked in vendir.lock.yml). The published OCI chart is
+  # used, so its own subcharts (kmcp, agents, oauth2-proxy, ...) are bundled and
+  # gated by conditions. CRDs are NOT shipped by this subchart — they live in this
+  # chart's crds/ directory.
+  - name: kagent
+    repository: file://charts/kagent
+    version: 0.9.9

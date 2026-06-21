@@ -1,0 +1,45 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+minimumRequiredVersion: 0.12.0
+directories:
+# Upstream kagent controller app chart, vendored as a subchart of helm/kagent.
+# The PUBLISHED OCI chart is used (not the git tree) because upstream ships
+# Chart-template.yaml + file:// / OCI subchart deps that are only resolved into a
+# final Chart.yaml at upstream release time; the packaged 0.9.9 chart already has
+# every subchart (kmcp, kagent-tools, agents, oauth2-proxy) bundled under its own
+# charts/ dir. CRDs are NOT part of this chart — upstream ships them separately
+# (kagent-crds + kmcp-crds); we vendor those into helm/kagent/crds below.
+- path: helm/kagent/charts/kagent
+  contents:
+  - path: .
+    helmChart:
+      name: kagent
+      version: "0.9.9"
+      repository:
+        url: oci://ghcr.io/kagent-dev/kagent/helm
+# CRDs for the kagent app, vendored as raw upstream YAML into the chart's crds/
+# directory (literal crds/ + Flux `crds: CreateReplace` in the meta-package — the
+# app-owned-CRDs pattern). `helm.sh/resource-policy: keep` is injected into each
+# by the post-sync step (`make sync`) so the files are committed with the
+# annotation; this is a deliberate, reproducible mutation of the vendored copies.
+- path: helm/kagent/crds
+  contents:
+  # kagent.dev CRDs (Agent, AgentHarness, ModelConfig, ModelProviderConfig,
+  # RemoteMCPServer, Memory, ToolServer, SandboxAgent) from the kagent git tag.
+  - path: kagent.dev
+    git:
+      url: https://github.com/kagent-dev/kagent
+      ref: v0.9.9
+    includePaths:
+    - helm/kagent-crds/templates/*.yaml
+    newRootPath: helm/kagent-crds/templates
+  # kmcp MCPServer CRD (kagent.dev/MCPServer). Upstream's kagent-crds chart
+  # depends on kmcp-crds; kagent 0.9.9 pins kmcp v0.3.0 (kagent go.mod), so the
+  # CRD is vendored from that matching kmcp tag.
+  - path: kmcp
+    git:
+      url: https://github.com/kagent-dev/kmcp
+      ref: v0.3.0
+    includePaths:
+    - helm/kmcp-crds/templates/mcpserver-crd.yaml
+    newRootPath: helm/kmcp-crds/templates

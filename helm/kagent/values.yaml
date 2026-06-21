@@ -1,0 +1,44 @@
+# Values for the vendored upstream kagent controller chart. The upstream chart is
+# a subchart under charts/kagent (managed by vendir, pinned in vendir.lock.yml).
+# Subchart values are namespaced under its chart name (`kagent`).
+#
+# Only Giant-Swarm-wide sensible defaults live here (registry, retagged image
+# repositories, pinned tag, naming). Cluster/topology-specific wiring (controller
+# auth mode, metrics env, security contexts, oauth2-proxy, model providers) stays
+# in the agentic-platform meta-package, which overrides these via valuesFrom.
+#
+# Every object under `kagent` is marked additionalProperties: true: the upstream
+# subchart's full (large) values structure is merged in and flows through this
+# wrapper, so the generated values.schema.json must accept arbitrary upstream keys
+# while still documenting the GS defaults below.
+#
+# Note on the version/tag label: wrapping the upstream chart as a subchart means
+# its `.Chart.Version` stays the clean pinned `0.9.9` even when helm-controller
+# sources THIS umbrella chart via OCIRepository (the OCI +digest is appended to
+# the umbrella version, not the subchart). That removes the need for the tag pin /
+# postRenderer label-sanitization hack the meta-package used when it pulled the
+# upstream chart directly.
+kagent:  # @schema additionalProperties: true
+  # Pin the release-independent name so the controller Service is always
+  # `kagent-controller` regardless of the umbrella release name.
+  fullnameOverride: kagent
+  # Pull kagent images from the GS-retagged registry (retagger uses
+  # override_repo_name, so the repository paths are flat, not the upstream
+  # kagent-dev/kagent/* hierarchy).
+  registry: gsoci.azurecr.io/giantswarm
+  # Explicit image tag matching the vendored chart version. Avoids the upstream
+  # fallback to `.Chart.Version` for the image tag.
+  tag: "0.9.9"
+  controller:  # @schema additionalProperties: true
+    image:  # @schema additionalProperties: true
+      repository: kagent-controller
+    agentImage:  # @schema additionalProperties: true
+      repository: kagent-app
+    skillsInitImage:  # @schema additionalProperties: true
+      repository: kagent-skills-init
+  ui:  # @schema additionalProperties: true
+    image:  # @schema additionalProperties: true
+      repository: kagent-ui
+  # Keep kagent core resources in a dedicated namespace separate from the
+  # umbrella release namespace.
+  namespaceOverride: kagent

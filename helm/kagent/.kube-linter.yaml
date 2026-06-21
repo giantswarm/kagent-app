@@ -1,0 +1,15 @@
+---
+# kube-linter configuration for the kagent chart.
+#
+# The controller, UI and bundled agent subcharts are the vendored upstream
+# kagent-dev/kagent chart (charts/kagent). On Giant Swarm clusters the
+# restricted-PSS securityContext is applied via the agentic-platform meta-package
+# values (and a Kyverno mutate policy), not baked into this vendor wrapper's
+# defaults, so the static PSS checks are handled at the platform layer — exclude
+# them here to keep the wrapper vendor-agnostic.
+checks:
+  exclude:
+    - "no-read-only-root-fs"
+    - "run-as-non-root"
+    - "unset-cpu-requirements"
+    - "unset-memory-requirements"
