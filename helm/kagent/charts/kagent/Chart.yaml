@@ -59,7 +59,7 @@ dependencies:
 - condition: oauth2-proxy.enabled
   name: oauth2-proxy
   repository: https://oauth2-proxy.github.io/manifests
-  version: ~7.0.0
+  version: ~7.18.0
 description: A Helm chart for kagent, built with Google ADK
 name: kagent
 type: application
