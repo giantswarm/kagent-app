@@ -19,11 +19,11 @@ Giant Swarm packaging of the upstream kagent-dev/kagent controller (Kubernetes-n
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| kagent.controller.agentImage.repository | string | `"kagent-app"` |  |
-| kagent.controller.image.repository | string | `"kagent-controller"` |  |
-| kagent.controller.skillsInitImage.repository | string | `"kagent-skills-init"` |  |
 | kagent.fullnameOverride | string | `"kagent"` |  |
-| kagent.namespaceOverride | string | `"kagent"` |  |
 | kagent.registry | string | `"gsoci.azurecr.io/giantswarm"` |  |
 | kagent.tag | string | `"0.9.9"` |  |
+| kagent.controller.image.repository | string | `"kagent-controller"` |  |
+| kagent.controller.agentImage.repository | string | `"kagent-app"` |  |
+| kagent.controller.skillsInitImage.repository | string | `"kagent-skills-init"` |  |
 | kagent.ui.image.repository | string | `"kagent-ui"` |  |
+| kagent.namespaceOverride | string | `"kagent"` |  |
