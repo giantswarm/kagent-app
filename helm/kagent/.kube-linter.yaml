@@ -13,3 +13,7 @@ checks:
     - "run-as-non-root"
     - "unset-cpu-requirements"
     - "unset-memory-requirements"
+    # The vendored upstream subcharts (e.g. grafana-mcp) reference :latest images
+    # we don't control; actual subchart enablement/images are driven by the
+    # agentic-platform meta-package, not this wrapper's lint-time defaults.
+    - "latest-tag"
