@@ -219,4 +219,3 @@ spec:
       {{- end }}
       resources:
         {{- toYaml .Values.resources | nindent 8 }}
-      
