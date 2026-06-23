@@ -27,3 +27,11 @@ Giant Swarm packaging of the upstream kagent-dev/kagent controller (Kubernetes-n
 | kagent.controller.skillsInitImage.repository | string | `"kagent-skills-init"` |  |
 | kagent.ui.image.repository | string | `"kagent-ui"` |  |
 | kagent.namespaceOverride | string | `"kagent"` |  |
+| kagent.kagent-tools.tools.image.registry | string | `"gsoci.azurecr.io"` |  |
+| kagent.kagent-tools.tools.image.repository | string | `"giantswarm/kagent-tools"` |  |
+| kagent.kagent-tools.tools.resources.requests.cpu | string | `"100m"` |  |
+| kagent.kagent-tools.tools.resources.requests.memory | string | `"128Mi"` |  |
+| kagent.kagent-tools.tools.resources.requests.ephemeral-storage | string | `"50Mi"` |  |
+| kagent.kagent-tools.tools.resources.limits.cpu | string | `"1"` |  |
+| kagent.kagent-tools.tools.resources.limits.memory | string | `"512Mi"` |  |
+| kagent.kagent-tools.tools.resources.limits.ephemeral-storage | string | `"512Mi"` |  |

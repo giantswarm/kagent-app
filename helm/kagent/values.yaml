@@ -42,3 +42,28 @@ kagent:  # @schema additionalProperties: true
   # Keep kagent core resources in a dedicated namespace separate from the
   # umbrella release namespace.
   namespaceOverride: kagent
+  # The bundled kagent-tools subchart reads its own image/resources keys
+  # (`.Values.tools.*`) and does NOT inherit the parent `kagent.registry`.
+  kagent-tools:  # @schema additionalProperties: true
+    tools:  # @schema additionalProperties: true
+      image:  # @schema additionalProperties: true
+        # Source the tool-server image from the GS-retagged registry (mirror of
+        # ghcr.io/kagent-dev/kagent/tools) so it satisfies the
+        # restrict-image-registries Kyverno policy. `tag` is intentionally unset:
+        # the subchart coalesces it to its Chart.Version, keeping the image tag
+        # in lockstep with the vendored kagent-tools version.
+        registry: gsoci.azurecr.io
+        repository: giantswarm/kagent-tools
+      # ephemeral-storage requests+limits are required because the cluster
+      # injects a writable /tmp emptyDir (readOnlyRootFilesystem) without a
+      # sizeLimit, which trips require-emptydir-requests-and-limits unless the
+      # mounting container declares ephemeral-storage.
+      resources:  # @schema additionalProperties: true
+        requests:
+          cpu: 100m
+          memory: 128Mi
+          ephemeral-storage: 50Mi
+        limits:
+          cpu: "1"
+          memory: 512Mi
+          ephemeral-storage: 512Mi
