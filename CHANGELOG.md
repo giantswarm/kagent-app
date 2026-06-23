@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Source the bundled `kagent-tools` tool-server image from
+  `gsoci.azurecr.io/giantswarm/kagent-tools` (mirror of
+  `ghcr.io/kagent-dev/kagent/tools`) and declare `ephemeral-storage`
+  requests/limits on its container, clearing the `restrict-image-registries`
+  and `require-emptydir-requests-and-limits` Kyverno audit warnings in the
+  `agentic-platform` namespace (giantswarm/giantswarm#36885). Overrides nest
+  under `kagent.kagent-tools.tools.*` — the keys the subchart actually reads;
+  it does not inherit the parent `kagent.registry`.
 - Initial Giant Swarm packaging of the upstream `kagent-dev/kagent` controller
   chart, vendored as a subchart via vendir (pinned `0.9.9`).
 - App-owned CRDs: the eight `kagent.dev` CRDs and the `kmcp` `MCPServer` CRD ship
