@@ -1,0 +1,9 @@
+{
+  // Ignore vendored/generated subcharts under helm/*/charts/**. Their Chart.yaml
+  // is rendered from Chart-template.yaml during the vendor/generate step, so
+  // Renovate cannot run `helm dependency update` to refresh the subchart's
+  // Chart.lock (the `renovate/artifacts` check always fails) and any edit is
+  // overwritten on the next regeneration. Manage upstream chart-dependency
+  // versions at their source instead. See #11.
+  ignorePaths: ['helm/*/charts/**'],
+}
